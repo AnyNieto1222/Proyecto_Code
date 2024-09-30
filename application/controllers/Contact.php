@@ -15,7 +15,7 @@ class Contact extends CI_Controller
     public function Contact_views() {
         $this->load->view('header');
 
-        // Configurar las reglas de validación
+        
         $this->form_validation->set_rules('nombre', 'Nombre', 'required|min_length[3]|max_length[50]|alpha');
         $this->form_validation->set_rules('habilidades', 'Habilidades', 'required|min_length[3]|max_length[100]');
         $this->form_validation->set_rules('experiencia', 'Experiencia', 'required|numeric|greater_than_equal_to[0]');
@@ -27,17 +27,17 @@ class Contact extends CI_Controller
 		$this->form_validation->set_message('alpha', 'El campo %s debe tener letras y número.');
         $data = [];
 
-        // Verificar si se ha enviado el formulario y si la validación es exitosa
+      
         if ($this->input->server('REQUEST_METHOD') === 'POST') {
             if ($this->form_validation->run() == FALSE) {
-                // Si la validación falla, recargar la vista con los errores
+              
                 $data['nombre'] = set_value('nombre');
                 $data['habilidades'] = set_value('habilidades');
                 $data['experiencia'] = set_value('experiencia');
                 $data['Num'] = set_value('Num');
                 $data['Correo'] = set_value('Correo');
             } else {
-                // Si la validación es exitosa, preparar los datos para insertar en la base de datos
+               
                 $data_to_insert = array(
                     'nombre' => $this->input->post('nombre'),
                     'habilidades' => $this->input->post('habilidades'),
@@ -46,18 +46,17 @@ class Contact extends CI_Controller
                     'correo' => $this->input->post('Correo')
                 );
 
-                // Insertar los datos en la tabla 'contactos' usando el modelo
                 if ($this->db->insert('contactos', $data_to_insert)) {
-                    // Mensaje de éxito si la inserción fue exitosa
+                 
                     $data['success'] = "Datos insertados con éxito.";
                 } else {
-                    // Mensaje de error si hubo algún problema en la inserción
+                  
                     $data['error'] = "Hubo un problema al insertar los datos.";
                 }
             }
         }
 
-        // Cargar la vista con los datos (y errores si existen)
+        
         $this->load->view('Contact_views', $data);
     }
 }
